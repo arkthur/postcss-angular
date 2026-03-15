@@ -5,12 +5,13 @@ export const stringify = (node: AnyNode, builder) => {
   logger.info(`Stringify called.`);
 
   try {
-    const nodes = node.root().nodes;
+    const root = node.root();
+    const nodes = root.nodes;
 
     if (nodes.length === 0) {
-      // No inline styles — return original source unchanged to prevent
-      // stylelint's fix mode from writing an empty string back to disk.
-      builder(node.source?.input?.css ?? "");
+      // No inline styles — return the original TypeScript source unchanged to
+      // prevent stylelint's fix mode from writing an empty string back to disk.
+      builder(root.raws.angularSource ?? "");
       return;
     }
 
