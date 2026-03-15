@@ -1,4 +1,4 @@
-import { ProcessOptions, Root, parse as postcssParse, Document } from "postcss";
+import { ProcessOptions, Root, parse as postcssParse } from "postcss";
 import { getComponentStyles } from "./get-component-metadata";
 import { logger } from "./logger";
 
@@ -9,6 +9,10 @@ export const parse = (source: string, opts: ProcessOptions): Root => {
   logger.info(`Parsing ${from}`);
 
   const document = postcssParse("", { from });
+
+  // Store the original TypeScript source so the stringifier can return it
+  // unchanged when there are no inline styles to process.
+  document.raws.angularSource = sourceString;
 
   try {
     const allStyles = getComponentStyles(sourceString, from);
