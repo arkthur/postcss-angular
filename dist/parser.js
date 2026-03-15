@@ -9,6 +9,9 @@ const parse = (source, opts) => {
     const { from } = opts;
     logger_1.logger.info(`Parsing ${from}`);
     const document = (0, postcss_1.parse)("", { from });
+    // Store the original TypeScript source so the stringifier can return it
+    // unchanged when there are no inline styles to process.
+    document.raws.angularSource = sourceString;
     try {
         const allStyles = (0, get_component_metadata_1.getComponentStyles)(sourceString, from);
         logger_1.logger.info(`Located ${allStyles.length} inline styles.`);
